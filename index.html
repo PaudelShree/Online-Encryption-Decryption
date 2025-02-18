@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encryption & Decryption with CryptoJS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    textarea, input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1>Encryption & Decryption</h1>
+  <textarea id="inputText" placeholder="Enter text to encrypt or decrypt"></textarea>
+  <input type="text" id="passphrase" placeholder="Enter passphrase">
+  <select id="algorithm">
+    <option value="AES">AES</option>
+    <option value="DES">DES</option>
+    <option value="RC4">RC4</option>
+    <option value="TripleDES">TripleDES</option>
+    <option value="Rabbit">Rabbit</option>
+  </select>
+  <button onclick="encrypt()">Encrypt</button>
+  <button onclick="decrypt()">Decrypt</button>
+  <div class="output">
+    <strong>Result:</strong>
+    <p id="result"></p>
+  </div>
+
+  <!-- Include CryptoJS from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script>
+    function getAlgorithm() {
+      const algorithm = document.getElementById('algorithm').value;
+      switch (algorithm) {
+        case 'AES':
+          return CryptoJS.AES;
+        case 'DES':
+          return CryptoJS.DES;
+        case 'RC4':
+          return CryptoJS.RC4;
+        case 'TripleDES':
+          return CryptoJS.TripleDES;
+        case 'Rabbit':
+          return CryptoJS.Rabbit;
+        default:
+          return CryptoJS.AES;
+      }
+    }
+
+    function encrypt() {
+      const text = document.getElementById('inputText').value;
+      const passphrase = document.getElementById('passphrase').value;
+      const algorithm = getAlgorithm();
+
+      if (!text || !passphrase) {
+        alert('Please enter text and a passphrase.');
+        return;
+      }
+
+      // Encrypt using the selected algorithm
+      const encrypted = algorithm.encrypt(text, passphrase).toString();
+      document.getElementById('result').innerText = encrypted;
+    }
+
+    function decrypt() {
+      const encryptedText = document.getElementById('inputText').value;
+      const passphrase = document.getElementById('passphrase').value;
+      const algorithm = getAlgorithm();
+
+      if (!encryptedText || !passphrase) {
+        alert('Please enter encrypted text and a passphrase.');
+        return;
+      }
+
+      // Decrypt using the selected algorithm
+      try {
+        const decrypted = algorithm.decrypt(encryptedText, passphrase).toString(CryptoJS.enc.Utf8);
+        if (!decrypted) {
+          throw new Error('Decryption failed. Incorrect passphrase or data.');
+        }
+        document.getElementById('result').innerText = decrypted;
+      } catch (error) {
+        alert('Decryption failed. Please check your passphrase and try again.');
+      }
+    }
+  </script>
+</body>
+</html>
