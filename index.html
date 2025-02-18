@@ -17,10 +17,16 @@
       text-align: center;
       color: #333;
     }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #555;
+    }
     textarea, input, select {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 16px;
@@ -48,8 +54,13 @@
 </head>
 <body>
   <h1>Encryption & Decryption</h1>
+  <label for="inputText">Source Text:</label>
   <textarea id="inputText" placeholder="Enter text to encrypt or decrypt"></textarea>
+
+  <label for="passphrase">Password Text:</label>
   <input type="text" id="passphrase" placeholder="Enter passphrase">
+
+  <label for="algorithm">Algorithm:</label>
   <select id="algorithm">
     <option value="AES">AES</option>
     <option value="DES">DES</option>
@@ -57,10 +68,12 @@
     <option value="TripleDES">TripleDES</option>
     <option value="Rabbit">Rabbit</option>
   </select>
+
   <button onclick="encrypt()">Encrypt</button>
   <button onclick="decrypt()">Decrypt</button>
+
   <div class="output">
-    <strong>Result:</strong>
+    <strong>Encrypted Text:</strong>
     <p id="result"></p>
   </div>
 
